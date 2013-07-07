@@ -125,6 +125,9 @@ decode_attr(6, Val, Tail, #stun{attrs=Attrs}=Msg) ->
     decode_attrs(Tail, Msg#stun{attrs=[{'USERNANE', Val} | Attrs]});
 
 %% MESSAGE integrity key
+decode_attr(8, Val, _Tail, #stun{class=Class, attrs=Attrs}=Msg)
+        when Class =:= response ->
+    Msg#stun{attrs=[{'MESSAGE_INTEGRITY', Val} | Attrs]};
 decode_attr(8, Val, Tail, #stun{attrs=Attrs}=Msg) ->
     decode_attrs(Tail, Msg#stun{attrs=[{'MESSAGE_INTEGRITY', Val} |
                                        Attrs]});
